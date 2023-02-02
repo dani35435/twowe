@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="js/vue.js"></script>
+    <script defer src="js/main.js"></script>
+    <title>Todo list</title>
+</head>
+<body>
+<div id="app">
+    <div id="search">
+        <h1>Заметки</h1>
+        <input v-on:keyup.enter="addPost" v-model="title" placeholder="Название " maxlength="20">
+    </div>
+    <br>
+    <div id="post" v-for="post, index in posts">
+        <img id="deletePost" v-on:click="deletePost(index)" src="assets/li-decor.png">
+        <h2>{{post.title}}</h2>
+        <ol v-for="paragraph, indexContent in post.content">
+            <input type="checkbox" v-model="posts[index].checkbox[indexContent]">
+            <input type="text" v-model="posts[index].content[indexContent]">
+            <img id="deleteContent" v-on:click="deleteContent(index,indexContent)" src="static/remove.png">
+        </ol>
+        <input v-on:keyup.enter="addContent(index)" v-model="content" maxlength="20">
+        <list></list>
+        >
+    </div>
+</div>
+</body>
+</html>
