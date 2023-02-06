@@ -36,8 +36,8 @@ Vue.component ("tabl",{
                     completed: false,
                 });
                 this.title = null;
-                if(this.data.completedNum <= 50) localStorage.todo = JSON.stringify(this.note);
-                else if(this.data.completedNum === 100) localStorage.todo3 = JSON.stringify(this.note);
+                if(this.data.completNum <= 50) localStorage.todo = JSON.stringify(this.note);
+                else if(this.data.completNum === 100) localStorage.todo3 = JSON.stringify(this.note);
                 else localStorage.todo2 = JSON.stringify(this.note);
             }
         },
@@ -52,11 +52,11 @@ Vue.component ("tabl",{
                     counterNotCompleted++;
                 }
             }
-            this.data.completedNum = (counterCompleted / (counterCompleted + counterNotCompleted)) * 100;
+            this.data.completNum = (counterCompleted / (counterCompleted + counterNotCompleted)) * 100;
             this.column1Move();
             this.column2Move();
-            if(this.data.completedNum <= 50) localStorage.todo = JSON.stringify(this.note);
-            else if(this.data.completedNum === 100) localStorage.todo3 = JSON.stringify(this.note);
+            if(this.data.completNum <= 50) localStorage.todo = JSON.stringify(this.note);
+            else if(this.data.completNum === 100) localStorage.todo3 = JSON.stringify(this.note);
             else localStorage.todo2 = JSON.stringify(this.note);
         }
 
@@ -71,7 +71,7 @@ Vue.component ("tabl",{
                 <div v-for="(element, elementId) in note_data.tasks" :key="elementId">
                     <div class="set_task">
                         <p class="title_task">{{element.title}}</p>
-                        <input @click="checkbox(elementId),column1Move() "  type="checkbox" v-model="element.completed" :class="{none: note_data.completedNum === 100}">
+                        <input @click="checkbox(elementId),column1Move() "  type="checkbox" v-model="element.completed" :class="{none: note_data.completNum === 100}">
                     </div>
                 </div>
                 <div class="add_task" :class="{none: note_data.tasks.length >= 5}">                  
@@ -90,48 +90,64 @@ Vue.component ("tabl",{
 let app = new Vue({
     el: '#app',
     data: {
-        id: 0,
-        title: '',
-        content: '',
-        posts: [],
-        list: ''
+        note: [],
+        note2: [],
+        note3: [],
+        noteTitle: null,
+        todos: [],
     },
-    beforeMount() {
-        if(localStorage.data) {
-            this.posts = JSON.parse(localStorage.data)
+    computed: {},
+    mounted() {
+        if (localStorage.todo) {
+            this.note = JSON.parse(localStorage.todo);
+        }
+        if (localStorage.todo2) {
+            this.note2 = JSON.parse(localStorage.todo2);
+        }
+        if (localStorage.todo3) {
+            this.note3 = JSON.parse(localStorage.todo3);
         }
     },
     methods: {
-            addPost: function () {
-            if (this.title === '') {
-                alert('Введите название')
-            } else {
-                this.id++;
-                this.posts.push({ id: this.id, title: this.title, content: [], checkbox: [false], list: this.list});
-                this.title = '';
+        addInTodos() {
+            this.todos.push({
+                note: this.note,
+                note2: this.note2,
+                note3: this.note3
+            })
+
+        },
+        createNote() {
+            if (this.noteTitle) {
+                this.note.push({
+                    noteTitle: this.noteTitle,
+                    tasks: [],
+                    completNum: 0,
+                });
+                this.noteTitle = null;
+                localStorage.todo = JSON.stringify(this.note);
             }
         },
-        deletePost: function (index) {
-            this.posts.splice(index, 1);
-            localStorage.data = JSON.stringify(this.posts)
-        },
-        addContent: function (index) {
-            if (this.content === '') {
-                alert('Заполните поле')
-            } else {
-                this.posts[index].content.push(this.content);
-                this.content = '';
+        moveColumn1(){
+            for (let i = 0; i < this.note.length; i++){
+                if(this.note[i].completNum > 50){
+                    this.note2.push(this.note[i])
+                    this.note.splice(this.note[i], 1)
+                }
             }
+            localStorage.todo = JSON.stringify(this.note);
+            localStorage.todo2 = JSON.stringify(this.note2);
+
         },
-        deleteContent: function (index,indexContent) {
-            this.posts[index].content.splice(indexContent, 1);
-            this.posts[index].checkbox.splice(indexContent, 1);
-        },
-        addCheckbox: function() {
-            this.posts[index].checkbox[indexContent] = !this.posts[index].checkbox[indexContent]
+        moveColumn2(){
+            for (let i = 0; i < this.note2.length; i++){
+                if(this.note2[i].completNum === 100){
+                    this.note3.push(this.note2[i])
+                    this.note2.splice(this.note2[i], 1)
+                }
+            }
+            localStorage.todo2 = JSON.stringify(this.note2);
+            localStorage.todo3 = JSON.stringify(this.note3);
         },
     },
-    updated() {
-        localStorage.data = JSON.stringify(this.posts)
-    }
 })
