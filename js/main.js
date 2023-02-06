@@ -102,7 +102,7 @@ let app = new Vue({
         title: '',
         content: '',
         posts: [],
-        list: true
+        list: ''
     },
     beforeMount() {
         if(localStorage.data) {
@@ -110,12 +110,12 @@ let app = new Vue({
         }
     },
     methods: {
-        addPost: function () {
+            addPost: function () {
             if (this.title === '') {
                 alert('Введите название')
             } else {
                 this.id++;
-                this.posts.push({ id: this.id, title: this.title, content: [], checkbox: [false] });
+                this.posts.push({ id: this.id, title: this.title, content: [], checkbox: [false], list: this.list});
                 this.title = '';
             }
         },
