@@ -23,19 +23,19 @@
     <div class="container">
         <div class="column col1" >
             <p>блок №1</p>
-            <list  @column1_move="moveColumn1" :notes="notes" :note_data="note_data" v-for="(note_data, index) in notes" :key="index" ></list>
+            <tabl  @column1_move="moveColumn1" :note="note" :data="data" v-for="(data, index) in note" :key="index" ></tabl>
             <!--        v-if="note_data.completedNum <= 50"-->
         </div>
 
         <div class="column col2">
             <p>блок №2</p>
-            <list  @column2_move="moveColumn2" :notes2="notes2" :note_data="note_data" v-for="(note_data, index) in notes2" :key="index" ></list>
+            <tabl  @column2_move="moveColumn2" :note2="note2" :data="data" v-for="(data, index) in note2" :key="index" ></tabl>
             <!--        v-if="note_data.completedNum > 50 && note_data.completedNum !== 100"-->
         </div>
 
         <div class="column col3">
             <p>блок №3</p>
-            <list  :notes3="notes3" :note_data="note_data" v-for="(note_data, index) in notes3" :key="index" ></list>
+            <tabl  :note3="note3" :data="data" v-for="(data, index) in note3" :key="index" ></tabl>
             <!--        v-if="note_data.completedNum === 100"-->
         </div>
     </div>

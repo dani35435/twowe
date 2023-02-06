@@ -1,97 +1,89 @@
-Vue.component ("list",{
-    template:`
-    
-    <div class="container">
-        <div class="column column1">
-            <div class="todo-card">
-                <h3>Заголовок заметки</h3>
-                <ul class="todo-list">
-                        <li class="todo-item">
-                            <p>Что то сделать</p>
-                            <input class="todo-done" type="button" value="Готово">
-                        </li>
-                        <li class="todo-item">
-                            <p>Что то сделать</p>
-                            <input class="todo-done" type="button" value="Готово">
-                        </li>
-                        <li class="todo-item">
-                            <p>Что то сделать</p>
-                            <input class="todo-done" type="button" value="Готово">
-                        </li>
-                </ul>
-            </div>
-            
-            <div class="todo-card">
-                <h3>Заголовок заметки</h3>
-                <ul class="todo-list">
-                    <li class="todo-item">
-                    <p>Что то сделать</p>
-                    <input class="todo-done" type="button" value="Готово">
-                </li>
-                <li class="todo-item">
-                    <p>Что то сделать</p>
-                    <input class="todo-done" type="button" value="Готово">
-                </li>
-                <li class="todo-item">
-                    <p>Что то сделать</p>
-                    <input class="todo-done" type="button" value="Готово">
-                </li>
-                </ul>
-            </div>
-            <div class="todo-card">
-                <h3>Заголовок заметки</h3>
-                <ul class="todo-list">
-                </ul>
-            </div>
-            </div>
-            
-            <div class="column column2">
-            <div class="todo-card">
-                <h3>Заголовок заметки</h3>
-                <ul class="todo-list">
-                <li class="todo-item">
-                <p>Что то сделать</p>
-            </div>
-            <div class="todo-card">
-                <h3>Заголовок заметки</h3>
-                <ul class="todo-list">
-                <li class="todo-item">
-                <p>Что то сделать</p>
-                <input class="todo-done" type="button" value="Готово">
-                </li>
-                </ul>
-            </div>
+let eventBus = new Vue();
 
+
+Vue.component ("tabl",{
+    props: {
+        tabs_data: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
+        note: {
+            type: Array,
+            default() {
+                return {}
+            }
+        }
+    },
+    data() {
+        return {
+            title: null,
+            task: [],
+        }
+    },
+    methods: {
+        column1Move(){
+            this.$emit('column1_move')
+        },
+        column2Move(){
+            this.$emit('column2_move')
+        },
+        addTask() {
+            if (this.title) {
+                this.data.tasks.push({
+                    title: this.title,
+                    completed: false,
+                });
+                this.title = null;
+                if(this.data.completedNum <= 50) localStorage.todo = JSON.stringify(this.note);
+                else if(this.data.completedNum === 100) localStorage.todo3 = JSON.stringify(this.note);
+                else localStorage.todo2 = JSON.stringify(this.note);
+            }
+        },
+        checkbox(id) {
+            this.data.tasks[id].completed = !this.data.tasks[id].completed;
+            let counterCompleted = 0;
+            let counterNotCompleted = 0;
+            for (let el of this.data.tasks) {
+                if (el.completed) {
+                    counterCompleted++;
+                } else {
+                    counterNotCompleted++;
+                }
+            }
+            this.data.completedNum = (counterCompleted / (counterCompleted + counterNotCompleted)) * 100;
+            this.column1Move();
+            this.column2Move();
+            if(this.data.completedNum <= 50) localStorage.todo = JSON.stringify(this.note);
+            else if(this.data.completedNum === 100) localStorage.todo3 = JSON.stringify(this.note);
+            else localStorage.todo2 = JSON.stringify(this.note);
+        }
+
+    },
+    template: `
+    <div class="list">
+            <div class="create_task">
+                <h3 class="title_block">{{data.noteTitle}}</h3>
+                <button @click="delNote()">X</button>
             </div>
-            <div class="todo-card">
-            </div>
-            
-            <div class="column column3">
-                <div class="todo-card">
-                <h3>Заголовок заметки</h3>
-                <ul class="todo-list">
-                    <li class="todo-item">
-                    <p>Что то сделать</p>
-                    <input class="todo-done" type="button" value="Готово">
-                </li>
-                                <li class="todo-item">
-                    <p>Что то сделать</p>
-                    <input class="todo-done" type="button" value="Готово">
-                </li>
-                    <li class="todo-item">
-                        <p>Что то сделать</p>
-                        <input class="todo-done" type="button" value="Готово">
-                    </li>
-                </ul>
+            <div class="task">
+                <div v-for="(element, elementId) in note_data.tasks" :key="elementId">
+                    <div class="set_task">
+                        <p class="title_task">{{element.title}}</p>
+                        <input @click="checkbox(elementId),column1Move() "  type="checkbox" v-model="element.completed" :class="{none: note_data.completedNum === 100}">
+                    </div>
                 </div>
+                <div class="add_task" :class="{none: note_data.tasks.length >= 5}">                  
+                    <div class="add_task_input">
+                        <input required type="text" @keyup.enter="addTask" v-model="title" placeholder="Задача">
+                    </div>
+                    <button @click="addTask">Добавить</button>
+            </div>
         </div>
     </div>
-`,
-    data(){
-        return{
-            list: String,
-        };
-    },
+    
+    `,
 })
 
 
