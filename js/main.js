@@ -68,13 +68,13 @@ Vue.component ("tabl",{
                 <button @click="delNote()">X</button>
             </div>
             <div class="task">
-                <div v-for="(element, elementId) in note_data.tasks" :key="elementId">
+                <div v-for="(element, elementId) in data.tasks" :key="elementId">
                     <div class="set_task">
                         <p class="title_task">{{element.title}}</p>
-                        <input @click="checkbox(elementId),column1Move() "  type="checkbox" v-model="element.completed" :class="{none: note_data.completNum === 100}">
+                        <input @click="checkbox(elementId),column1Move() "  type="checkbox" v-model="element.completed" :class="{none: data.completNum === 100}">
                     </div>
                 </div>
-                <div class="add_task" :class="{none: note_data.tasks.length >= 5}">                  
+                <div class="add_task" :class="{none: data.tasks.length >= 5}">                  
                     <div class="add_task_input">
                         <input required type="text" @keyup.enter="addTask" v-model="title" placeholder="Задача">
                     </div>
@@ -83,6 +83,80 @@ Vue.component ("tabl",{
         </div>
     </div>
     
+    `,
+})
+
+Vue.component('center-list', {
+    props: {
+        data: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
+        note: {
+            type: Array,
+            default() {
+                return {}
+            }
+        }
+    },
+    data() {
+        return {
+            taskTitle: null,
+            task: [],
+        }
+
+    },
+    methods: {
+        addTask() {
+            if (this.taskTitle) {
+                this.data.tasks.push({
+                    taskTitle: this.taskTitle,
+                    completed: false,
+                });
+                this.taskTitle = null;
+                localStorage.todo = JSON.stringify(this.note)
+            }
+        },
+        checkbox(id){
+            this.data.tasks[id].completed = !this.data.tasks[id].completed;
+            let counterCompleted = 0;
+            let counterNotCompleted = 0;
+            for (let el of this.data.tasks) {
+                if (el.completed) {
+                    counterCompleted++;
+                } else {
+                    counterNotCompleted++;
+                }
+            }
+            this.data.completedNum = (counterCompleted / (counterCompleted + counterNotCompleted)) * 100;
+            localStorage.todo = JSON.stringify(this.note);
+        },
+    },
+    template: `
+    <div class="center-list">
+        <div class="column column2" v-if="data.completedNum > 50">
+            <div class="create_task">
+                <h3 class="title_block">{{data.noteTitle}}</h3>
+                <button @click="delNote()">X</button>
+            </div>
+            <div class="task">
+                <div v-for="(element, elementId) in data.tasks" :key="elementId">
+                    <div class="set_task">
+                        <p class="title_task">{{element.taskTitle}}</p>
+                        <input @click="checkbox(elementId)" type="checkbox" v-model="element.completed">
+                    </div>
+                </div>
+                <div class="add_task">
+                    <div class="add_task_input">
+                        <input type="text" @keyup.enter="addTask" v-model="taskTitle" placeholder="Задача">
+                    </div>
+                    <button @click="addTask">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
     `,
 })
 
