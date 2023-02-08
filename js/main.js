@@ -1,6 +1,5 @@
 let eventBus = new Vue();
 
-
 Vue.component ("tabl",{
     props: {
         tabs_data: {
@@ -9,6 +8,7 @@ Vue.component ("tabl",{
                 return {}
             }
         },
+
         note: {
             type: Array,
             default() {
@@ -16,19 +16,23 @@ Vue.component ("tabl",{
             }
         }
     },
+
     data() {
         return {
             title: null,
             task: [],
         }
     },
+
     methods: {
         column1Move(){
             this.$emit('column1_move')
         },
+
         column2Move(){
             this.$emit('column2_move')
         },
+
         addTask() {
             if (this.title) {
                 this.data.tasks.push({
@@ -41,6 +45,7 @@ Vue.component ("tabl",{
                 else localStorage.todo2 = JSON.stringify(this.note);
             }
         },
+
         checkbox(id) {
             this.data.tasks[id].completed = !this.data.tasks[id].completed;
             let counterCompleted = 0;
@@ -59,8 +64,8 @@ Vue.component ("tabl",{
             else if(this.data.completNum === 100) localStorage.todo3 = JSON.stringify(this.note);
             else localStorage.todo2 = JSON.stringify(this.note);
         }
-
     },
+
     template: `
     <div class="list">
             <div class="create_task">
@@ -94,6 +99,7 @@ Vue.component('center-list', {
                 return {}
             }
         },
+
         note: {
             type: Array,
             default() {
@@ -101,13 +107,14 @@ Vue.component('center-list', {
             }
         }
     },
+
     data() {
         return {
             taskTitle: null,
             task: [],
         }
-
     },
+
     methods: {
         addTask() {
             if (this.taskTitle) {
@@ -119,6 +126,7 @@ Vue.component('center-list', {
                 localStorage.todo = JSON.stringify(this.note)
             }
         },
+
         checkbox(id){
             this.data.tasks[id].completed = !this.data.tasks[id].completed;
             let counterCompleted = 0;
@@ -134,6 +142,7 @@ Vue.component('center-list', {
             localStorage.todo = JSON.stringify(this.note);
         },
     },
+
     template: `
     <div class="center-list">
         <div class="column column2" v-if="data.completedNum > 50">
@@ -160,6 +169,38 @@ Vue.component('center-list', {
     `,
 })
 
+Vue.component('right-list', {
+    template: `
+    <div class="right-list">
+        <div class="column column3">
+            <div class="create_task">
+                <h3 class="title_block">{{note_data.noteTitle}}</h3>
+                <button @click="delNote()">X</button>
+            </div>
+            <div class="task">
+                <div v-for="(element, elementId) in note_data.tasks" :key="elementId">
+                    <div class="set_task">
+                        <p class="title_task">{{element.taskTitle}}</p>
+                        <input @click="checkbox(elementId)" type="checkbox" v-model="element.completed">
+                    </div>
+                </div>
+                <div class="add_task">
+                    <div class="add_task_input">
+                        <input type="text" @keyup.enter="addTask" v-model="taskTitle" placeholder="Задача">
+                    </div>
+                    <button @click="addTask">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    `,
+    data() {
+        return {};
+    },
+    methods: {},
+    computed: {}
+})
+
 
 let app = new Vue({
     el: '#app',
@@ -170,6 +211,7 @@ let app = new Vue({
         noteTitle: null,
         todos: [],
     },
+
     computed: {},
     mounted() {
         if (localStorage.todo) {
@@ -182,6 +224,7 @@ let app = new Vue({
             this.note3 = JSON.parse(localStorage.todo3);
         }
     },
+
     methods: {
         addInTodos() {
             this.todos.push({
@@ -189,8 +232,8 @@ let app = new Vue({
                 note2: this.note2,
                 note3: this.note3
             })
-
         },
+
         createNote() {
             if (this.noteTitle) {
                 this.note.push({
@@ -202,6 +245,7 @@ let app = new Vue({
                 localStorage.todo = JSON.stringify(this.note);
             }
         },
+
         moveColumn1(){
             for (let i = 0; i < this.note.length; i++){
                 if(this.note[i].completNum > 50){
@@ -211,8 +255,8 @@ let app = new Vue({
             }
             localStorage.todo = JSON.stringify(this.note);
             localStorage.todo2 = JSON.stringify(this.note2);
-
         },
+
         moveColumn2(){
             for (let i = 0; i < this.note2.length; i++){
                 if(this.note2[i].completNum === 100){
