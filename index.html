@@ -1,42 +1,46 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Note</title>
     <link rel="stylesheet" href="css/main.css">
-    <script defer src="js/vue.js"></script>
+    <script src="js/vue.js"></script>
     <script defer src="js/main.js"></script>
-    <title>Todo list</title>
 </head>
 <body>
 <div id="app">
-    <div id="created">
-        <h1>Заметки</h1>
-        <div>
-            <input class="create" @keyup.enter="createNote" v-model="noteTitle" placeholder="заметка">
-            <button class="create" @click="createNote">Добавить</button>
-        </div>
+    <div id="creating_record">
+        <h1>Note List</h1>
+        <form v-on:submit.prevent="creatingRecord">
+            <input class="listed" v-model="note" :disabled="column1.notes.length === 3" placeholder="Ваши заметки">
+            <input class="listed" v-model="recordOne" :disabled="column1.notes.length === 3" placeholder="заметка 1">
+            <input class="listed" v-model="recordTwo" :disabled="column1.notes.length === 3" placeholder="заметка 2">
+            <input class="listed" v-model="recordThree" :disabled="column1.notes.length === 3" placeholder="заметка 3">
+            <input class="listed" type="submit" value="Добавить" :class="{disabled: column1.notes.length === 3}">
+        </form>
     </div>
     <br>
+
     <div class="container">
-        <div class="column col1" >
-            <p>блок №1</p>
-            <tabl  @column1_move="moveColumn1" :note="note" :data="data" v-for="(data, index) in note" :key="index" ></tabl>
-            <!--        v-if="note_data.completNum <= 50"-->
+        <div class="column column1" :class="{disabled: about.signal}">
+            {{column1.idColumn}}
+            <list v-on:del_note="deleteNote1(index)" v-on:column1_move="moveColumn1(index)" :notes="column1.notes" :id_column="column1.idColumn" :about="about"
+                  :record_data="record_data" v-for="(record_data, index) in column1.notes" :key="index" class="list">
+            </list>
         </div>
-
-        <div class="column col2">
-            <p>блок №2</p>
-            <tabl  @column2_move="moveColumn2" :note2="note2" :data="data" v-for="(data, index) in note2" :key="index" ></tabl>
-            <!--        v-if="note_data.completNum > 50 && note_data.completNum !== 100"-->
+        <div class="column column2">
+            {{column2.idColumn}}
+            <list v-on:del_note="deleteNote2(index)" v-on:column2_move="moveColumn2(index)" :id_column="column2.idColumn" :about="about"
+                  v-on:column2_move_left="moveColumn2Left(index)" :notes="column2.notes" :record_data="record_data"
+                  v-for="(record_data, index) in column2.notes" :key="index" class="list">
+            </list>
         </div>
-
-        <div class="column col3">
-            <p>блок №3</p>
-            <tabl  :note3="note3" :data="data" v-for="(data, index) in note3" :key="index" ></tabl>
-            <!--        v-if="note_data.completNum === 100"-->
+        <div class="column column3">
+            {{column3.idColumn}}
+            <list v-on:del_note="deleteNote3(index)" :notes="column3.notes" :record_data="record_data" :id_column="column3.idColumn" :about="about"
+                  v-for="(record_data, index) in column3.notes" :key="index" class="list">
+            </list>
         </div>
     </div>
 </div>
