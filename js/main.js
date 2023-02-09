@@ -119,6 +119,7 @@ Vue.component('note', {
                         <input required type="text" @keyup.enter="addTask(),column2ChangeLeft()" v-model="taskTitle" placeholder="Задача">
                     </div>
                     <button @click="addTask(),column2ChangeLeft()">Добавить</button>
+                    <div class="line"></div>
             </div>
         </div>
     </div>

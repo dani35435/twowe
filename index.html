@@ -11,14 +11,15 @@
 
 <body>
 <div id="app">
+    <h1>Note List</h1>
     <div id="creating_record">
-        <h1>Note List</h1>
+
         <form v-on:submit.prevent="creatingRecord">
             <input class="listed" v-model="note" :disabled="column1.notes.length === 3" placeholder="Ваши заметки">
             <input class="listed" v-model="recordOne" :disabled="column1.notes.length === 3" placeholder="заметка 1">
             <input class="listed" v-model="recordTwo" :disabled="column1.notes.length === 3" placeholder="заметка 2">
             <input class="listed" v-model="recordThree" :disabled="column1.notes.length === 3" placeholder="заметка 3">
-            <input class="listed" type="submit" value="Добавить" :class="{disabled: column1.notes.length === 3}">
+            <input class="listed btn" type="submit" value="Добавить" :class="{disabled: column1.notes.length === 3}">
         </form>
     </div>
     <br>

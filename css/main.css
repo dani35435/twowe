@@ -4,17 +4,21 @@
 }
 
 body {
-    font-family: "JetBrains Mono";
+
 }
 
+/*навзвание заметок*/
 h3 {
     font-weight: 500;
+
 }
 
+/*дата и время*/
 p {
     font-size: 15px;
 }
 
+/*колонки блок*/
 .container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -24,112 +28,47 @@ p {
     padding-top: 40px;
 }
 
+/*сами колонки*/
 .column {
     display: flex;
     flex-direction: column;
-    padding: 30px;
-    border: grey 2px solid;
-    border-radius: 20px;
-    box-shadow: black 0 0 2px;
-}
-
-.column1 {
-    order: 3;
-}
-
-.column2 {
-    order: 1;
+    padding: 20px;
+    border: black 3px solid;
 }
 
 .todo-item {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    margin: 10px;
-}
-
-.todo-done {
-    padding: 2px;
-    margin-left: 5px;
-}
-
-.todo-done:hover {
-    border-radius: 3px;
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-.todo-form-mask {
-    display: none;
+    margin: 140px;
 }
 
 .todo-form {
     display: flex;
     flex-direction: column;
-    width: min-content;
-    flex-basis: content;
-    border-radius: 10px;
-    box-shadow: grey 2px 2px 12px;
     position: fixed;
-    background-color: white;
 }
 
-.todo-form-input {
-    margin: 5px;
+.line{
+    padding: 0px 10px 10px 0px;
+    border-bottom: solid 3px gray;
 }
 
-label {
-    text-align: center;
-    font-size: small;
-}
-
-select {
-    align-self: center;
-    width: min-content;
-}
-
-.add-todo {
+#creating_record{
+    display: flex;
+    justify-content: center;
 
 }
-
-
-
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap');
-
-#search {
+h1{
     text-align: center;
 }
-#search input{
-    padding-left: 15px;
-    width: 250px;
-    height: 40px;
-    outline: none;
-    border: 3px solid black;
-    border-radius: 5px;
-}
-#search input:hover{
-    border: 3px solid #3176f5;
-}
-#post {
-    background-color: coral;
-    margin: 0 auto;
-    border-radius: 10px;
-    width: 300px;
-    padding: 20px;
-}
-img {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-}
-ol {
-    margin-bottom: 10px;
-}
-#deletePost {
-    position: absolute;
-    margin-left: 250px;
+
+.listed{
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
 }
 
-#deleteContent {
-    position: absolute;
-    margin-left: 15px;
+.btn{
+    margin-left: 45px;
 }
