@@ -8,6 +8,7 @@
     <script src="js/vue.js"></script>
     <script defer src="js/main.js"></script>
 </head>
+
 <body>
 <div id="app">
     <div id="creating_record">
@@ -25,22 +26,24 @@
     <div class="container">
         <div class="column column1" :class="{disabled: about.signal}">
             {{column1.idColumn}}
-            <list v-on:del_note="deleteNote1(index)" v-on:column1_move="moveColumn1(index)" :notes="column1.notes" :id_column="column1.idColumn" :about="about"
+            <note v-on:del_note="delete1(index)" v-on:column1_move="changeColumn1(index)" :notes="column1.notes" :id_column="column1.idColumn" :about="about"
                   :record_data="record_data" v-for="(record_data, index) in column1.notes" :key="index" class="list">
-            </list>
+            </note>
         </div>
+
         <div class="column column2">
             {{column2.idColumn}}
-            <list v-on:del_note="deleteNote2(index)" v-on:column2_move="moveColumn2(index)" :id_column="column2.idColumn" :about="about"
-                  v-on:column2_move_left="moveColumn2Left(index)" :notes="column2.notes" :record_data="record_data"
+            <note v-on:del_note="delete2(index)" v-on:column2_move="changeColumn2(index)" :id_column="column2.idColumn" :about="about"
+                  v-on:column2_move_left="changeColumn2(index)" :notes="column2.notes" :record_data="record_data"
                   v-for="(record_data, index) in column2.notes" :key="index" class="list">
-            </list>
+            </note>
         </div>
+
         <div class="column column3">
             {{column3.idColumn}}
-            <list v-on:del_note="deleteNote3(index)" :notes="column3.notes" :record_data="record_data" :id_column="column3.idColumn" :about="about"
+            <note v-on:del_note="delete3(index)" :notes="column3.notes" :record_data="record_data" :id_column="column3.idColumn" :about="about"
                   v-for="(record_data, index) in column3.notes" :key="index" class="list">
-            </list>
+            </note>
         </div>
     </div>
 </div>
