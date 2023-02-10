@@ -39,22 +39,27 @@ Vue.component('note', {
     },
 
     methods: {
+        // слушатель на то, что добавляется в первую колонку
         column1Move() {
             this.$emit('column1_move')
         },
 
+        // слушатель на кнопку удаления
         delNote() {
             this.$emit('del_note')
         },
 
+        // слушатель на то, что добавляется в первую колонку
         column2ChangeLeft() {
             this.$emit('column2_move_left')
         },
 
+        // слушатель на то, что добавляется в первую колонку
         column2Move() {
             this.$emit('column2_move')
         },
 
+        // создание заявки
         addTask() {
             if (this.taskTitle) {
                 this.record_data.tasks.push({
@@ -67,6 +72,7 @@ Vue.component('note', {
             }
         },
 
+        // добавление заявок в колонке
         updateCompletedNum() {
             let counterCompleted = 0;
             let counterNotCompleted = 0;
@@ -86,6 +92,7 @@ Vue.component('note', {
             this.save();
         },
 
+        // сохранение блоков, при перезагрузки
         save() {
             if (this.idColumn === 1 && this.record_data.completedNum <= 50) localStorage.todo = JSON.stringify(this.notes);
             else if (this.idColumn === 3 && this.record_data.completedNum === 100) localStorage.todo3 = JSON.stringify(this.notes);
@@ -160,6 +167,7 @@ let app = new Vue({
     computed: {
 
     },
+    // это отвечает за сохранение заявок
     mounted() {
         if (localStorage.todo) {
             this.column1.notes = JSON.parse(localStorage.todo)
@@ -176,6 +184,7 @@ let app = new Vue({
     },
 
     methods: {
+        // создание самой заявки, нельзя больше трех заявок создавать в первую колонку
         creatingRecord() {
             if (this.note && this.column1.notes.length < 3 && this.recordOne && this.recordTwo && this.recordThree) {
                 this.column1.notes.push({
@@ -205,6 +214,7 @@ let app = new Vue({
             this.length()
         },
 
+        // чтобы в первой колонки, если половина сделана то переходит на некст столбец
         changeColumn1(id) {
             if (this.column1.notes[id].completedNum > 50 && this.column2.notes.length <= 5) {
                 if (this.column2.notes.length === 5) {
@@ -230,6 +240,7 @@ let app = new Vue({
             localStorage.about = JSON.stringify(this.about)
         },
 
+        // если выполнено 100% то переходит в третью колонку
         changeColumn2(id) {
             if (this.column2.notes[id].completedNum === 100) {
                 this.times(id);
@@ -243,6 +254,7 @@ let app = new Vue({
             localStorage.about = JSON.stringify(this.about)
         },
 
+        // если меньше 50% остается в первой колонке
         changeColumn2Left(id) {
             if (this.column2.notes[id].completedNum <= 50) {
                 this.column1.notes.unshift(this.column2.notes[id]);
@@ -254,12 +266,14 @@ let app = new Vue({
             localStorage.todo2 = JSON.stringify(this.column2.notes);
         },
 
+        // удаление из первой
         delete1(id) {
             this.column1.notes.splice(id, 1);
             this.length()
             localStorage.todo = JSON.stringify(this.column1.notes);
         },
 
+        // удаление из второй
         delete2(id) {
             this.column2.notes.splice(id, 1);
             this.about.signal = false
@@ -268,17 +282,20 @@ let app = new Vue({
             localStorage.todo2 = JSON.stringify(this.column2.notes);
         },
 
+        // удаление из третьей
         delete3(id) {
             this.column3.notes.splice(id, 1);
             localStorage.todo3 = JSON.stringify(this.column3.notes);
         },
 
+        // вывод даты и времени в третьей колонке
         times(id) {
             let Data = new Date();
             this.column2.notes[id].time = Data.getHours() + ':' + Data.getMinutes();
             this.column2.notes[id].date = Data.getDate() + ':' + Data.getMonth() + ':' + Data.getFullYear();
         },
 
+        // для того, чтобы смотреть количество выполненых
         length(){
             this.about.lengthColumn1 = this.column1.notes.length;
             localStorage.about = JSON.stringify(this.about)
